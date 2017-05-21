@@ -1,0 +1,58 @@
+#-----------------------------------------------------------------------------------#
+                                #Stevens Institute of Technology# 
+                        #MIS-636 - Knowledge Discovery and Data Mining#
+                                  #Thushara Elizabeth Tom#
+                     #Predicting Employee Attrition within an Organisation#
+#-----------------------------------------------------------------------------------#
+
+#Libraries for analysis
+library(readr)
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+library(rpart)
+library(tree)
+library(ISLR)
+
+#Loading the dataset
+HR_Analytics <- read_csv("C:/Users/Tliztom/Desktop/STEVENS/Sem_2/KDD/Final Project/HR Analytics.csv")
+attach(HR_Analytics)
+
+#Descriptive statistics of the data
+#Dimensions of the data
+dim(HR_Analytics)
+
+#Testing for NULL values
+is.null(HR_Analytics)
+
+#Employees by Role
+EbyR <- as.data.frame(table(role))
+
+#Employees by Salary
+EbyS <- as.data.frame(table(salary))
+
+#Interaction between Salary and Role
+E_Salary_Role <- HR_Analytics %>% count(role, salary) %>% 
+mutate(salary = ordered(salary, c("low", "medium", "high")),n = comma(n, 0))
+
+#Employees left and stayed
+E_Left <- table(left)
+
+#Splitting the data into train and test
+set.seed(101)
+sample <- sample.int(n = nrow(HR_Analytics), size = floor(.70*nrow(HR_Analytics)), replace = F)
+train <- HR_Analytics[sample, ]
+test  <- HR_Analytics[-sample, ]
+
+#Plotting the Decision Tree using the Train data
+Tree <- rpart(left ~ ., data = train, method = 'class')
+plot(Tree, uniform=TRUE, margin=0.2)
+text(Tree, pretty = 0,use.n=TRUE, all=TRUE, cex=.7)
+summary(Tree)
+
+#Testing how the model performs
+Predict_Left <- predict(Tree,test,type = 'class')
+table(Predict_Left,test$left)
+
+#Correctly Predicted
+mean(Predict_Left == test$left)
