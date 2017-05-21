@@ -21,14 +21,23 @@ The dataset can be found at: https://www.kaggle.com/ludobenistant/hr-analytics
 Variable and Description:
 
 satisfaction_level - Satisfaction level of employees working at the firm; 
+
 last_evaluation - Evaluation rate of the employee; 
+
 number_project - Number of projects the employee has worked on; 
+
 average_montly_hours - Average monthly hours the employee has worked; 
+
 time_spend_company - Time spend working for the company; 
+
 Work_accident - If a work accident has occurred during the time; 
+
 promotion_last_5years - If the employee received a promotion in the last 5 years; 
+
 role - Role of the employee; 
+
 salary - Salary range of the employee; 
+
 Left - Whether the employee left or not [Predictor Variable]
 
 Tools Used : R
